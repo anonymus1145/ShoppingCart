@@ -7,9 +7,8 @@ import { Routes, Route } from 'react-router-dom'
 
 
 function App() {
-
   return (
-    <div className="grid grid-rows-[auto,1fr] gap-4">        
+    <div className="grid grid-rows-[auto,1fr] gap-4">      
     <NavBar />
       <Routes>
         <Route path="/" element={<HomePage />} />
