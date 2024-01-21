@@ -7,7 +7,10 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { useEffect, useState } from "react"
+import { useToast } from "@/components/ui/use-toast"
+import { Toaster } from "@/components/ui/toaster"
+import { CartItemsContext } from "@/hooks/useContext"
+import { useContext, useEffect, useRef } from "react"
 
 
 export type Product = {
@@ -18,19 +21,18 @@ export type Product = {
     image: string
 }
 
+export let itemsForCart: Product[] = []
+
+
 export const ItemsPage = () => {
-   const [products, setProducts] = useState<Product[]>([])
-    
-    const fetchProducts = async () => {
-        const response = await fetch("https://api.escuelajs.co/api/v1/products/?categoryId=2")
-        const productLis = await response.json()
 
-        setProducts(productLis);
+    const products = useContext(CartItemsContext) || [];
+
+    const { toast } = useToast()
+
+    function handleClick() {
+        toast({ description: "Added to cart." })
     }
-
-    useEffect(() => {
-       fetchProducts()
-    }, []) // Empty dependency array ensures useEffect runs only once!!
 
     return (
         <div className="grid grid-rows-start-1 grid-rows-end-2 place-items-center gap-4 px-6 py-24 sm:py-32 lg:px-8 flex-wrap">
@@ -43,14 +45,16 @@ export const ItemsPage = () => {
                         </CardHeader>
                         <CardContent className="text-center gap-2">
                             <p className="text-2xl text-black">$ {product.price}</p>
-                            <p className="text-md text-black">Quantity<input type="number" min={0} max={10} className="w-12 border-2 mx-2" /></p>
+                            <p className="text-md text-black">Quantity<input id="${count}" type="number" min={0} max={10} className="w-12 border-2 mx-2" /></p>
                         </CardContent>
                         <CardFooter className="items-center justify-center bottom-0">
-                            <Button>Add to cart</Button>
+                            <Button onClick={handleClick}>Add to cart</Button>
                         </CardFooter>
                     </Card>
                 ))}
             </div>
+            <Toaster />
         </div>
     )
+
 }
