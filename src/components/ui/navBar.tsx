@@ -10,12 +10,12 @@ import {
 import { Button } from "./button"
 import { ShoppingCart } from "lucide-react"
 import { useContext } from "react"
-import { CartItemsContext } from "@/hooks/useContext"
+import { CartItems } from "@/hooks/useContext"
 
 
 export const NavBar = () => {
 
-    const products = useContext(CartItemsContext) || [];
+    const products = useContext(CartItems) || [];
 
     return (
         <div className="flex grid-rows-start-0 grid-rows-end-1 border-b-4 border-gray-400 py-4 px-4 mx-10 text-white font-bold text-lg gap-4">
@@ -36,6 +36,16 @@ export const NavBar = () => {
                     </SheetHeader>
                     <br/>
                     <p>Items added to cart: {products.length}</p>
+                    <br/>
+                    {products.map((product) => (
+                        <div key={product.id}>
+                            <p>{product.title}</p>
+                            <p>{"Price: " + product.price + "$"}</p>
+                            <br/>
+                        </div>
+                    ))}
+                    <br/>
+                    <p>Total: {products.reduce((acc, curr) => acc + curr.price, 0)}$</p>
                     <br/>
                     <Button>Checkout</Button>
                 </SheetContent>

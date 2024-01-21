@@ -21,16 +21,12 @@ export type Product = {
     image: string
 }
 
-export let itemsForCart: Product[] = []
-
-
-export const ItemsPage = () => {
-
+export const ItemsPage = ({addToCart}: any) => {
     const products = useContext(CartItemsContext) || [];
-
     const { toast } = useToast()
 
-    function handleClick() {
+    function handleClick(product: Product) {
+        addToCart(product);
         toast({ description: "Added to cart." })
     }
 
@@ -48,7 +44,7 @@ export const ItemsPage = () => {
                             <p className="text-md text-black">Quantity<input id="${count}" type="number" min={0} max={10} className="w-12 border-2 mx-2" /></p>
                         </CardContent>
                         <CardFooter className="items-center justify-center bottom-0">
-                            <Button onClick={handleClick}>Add to cart</Button>
+                            <Button onClick={() => handleClick(product)}>Add to cart</Button>
                         </CardFooter>
                     </Card>
                 ))}
